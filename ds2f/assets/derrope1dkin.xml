@@ -1,0 +1,148 @@
+<mujoco model="stiff-rope">
+  <worldbody>
+    <body name="stiffrope" pos="6.5 0.0 0.5" quat="0.0 0.0 1.0 0.0">
+      <freejoint name="freejoint_A"/>
+      <site name="ft_rope" pos="0 0 0" size="0.03 0.015 0.015" rgba="1 0 0 0" type="sphere" group="1" />
+      <body name="Bmain_first">
+        <body name="B_first" pos="0 0 0">
+          <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+        </body>
+        <site name="S_first" pos="0 0 0" size="0.0135"/>
+        <geom name="G0" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+        <site name="S_0" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+        <site name="twistcylx_1" pos="0 0 0.05" quat="0.707 0 0 -0.707" size="0.001 0.05" rgba="0 0 1 0.0" type="cylinder" group="1" />
+        <site name="twistcyly_1" pos="0 0.05 0" quat="0.707 -0.707 0 0" size="0.001 0.05" rgba="1 1 0 0.0" type="cylinder" group="1" />
+        <body name="Bmain_1" pos="1.0 0 0">
+          <body name="B_1" pos="0 0 0">
+            <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+          </body>
+          <joint name="J_1" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+          <geom name="G1" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+          <site name="S_1" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+          <body name="Bmain_2" pos="1.0 0 0">
+            <body name="B_2" pos="0 0 0">
+              <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+            </body>
+            <joint name="J_2" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+            <geom name="G2" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+            <site name="S_2" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+            <body name="Bmain_3" pos="1.0 0 0">
+              <body name="B_3" pos="0 0 0">
+                <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+              </body>
+              <joint name="J_3" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+              <geom name="G3" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+              <site name="S_3" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+              <body name="Bmain_4" pos="1.0 0 0">
+                <body name="B_4" pos="0 0 0">
+                  <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                </body>
+                <joint name="J_4" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                <geom name="G4" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                <site name="S_4" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                <body name="Bmain_5" pos="1.0 0 0">
+                  <body name="B_5" pos="0 0 0">
+                    <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                  </body>
+                  <joint name="J_5" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                  <geom name="G5" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                  <site name="S_5" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                  <body name="Bmain_6" pos="1.0 0 0">
+                    <body name="B_6" pos="0 0 0">
+                      <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                    </body>
+                    <joint name="J_6" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                    <geom name="G6" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                    <site name="S_6" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                    <site name="twistcylx_7" pos="0 0 0.05" quat="0.707 0 0 -0.707" size="0.001 0.05" rgba="0 0 1 0.0" type="cylinder" group="1" />
+                    <site name="twistcyly_7" pos="0 0.05 0" quat="0.707 -0.707 0 0" size="0.001 0.05" rgba="1 1 0 0.0" type="cylinder" group="1" />
+                    <body name="Bmain_7" pos="1.0 0 0">
+                      <body name="B_7" pos="0 0 0">
+                        <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                      </body>
+                      <joint name="J_7" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                      <geom name="G7" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                      <site name="S_7" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                      <body name="Bmain_8" pos="1.0 0 0">
+                        <body name="B_8" pos="0 0 0">
+                          <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                        </body>
+                        <joint name="J_8" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                        <geom name="G8" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                        <site name="S_8" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                        <body name="Bmain_9" pos="1.0 0 0">
+                          <body name="B_9" pos="0 0 0">
+                            <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                          </body>
+                          <joint name="J_9" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                          <geom name="G9" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                          <site name="S_9" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                          <body name="Bmain_10" pos="1.0 0 0">
+                            <body name="B_10" pos="0 0 0">
+                              <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                            </body>
+                            <joint name="J_10" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                            <geom name="G10" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                            <site name="S_10" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                            <body name="Bmain_11" pos="1.0 0 0">
+                              <body name="B_11" pos="0 0 0">
+                                <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                              </body>
+                              <joint name="J_11" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                              <geom name="G11" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                              <site name="S_11" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                              <body name="Bmain_last" pos="1.0 0 0">
+                                <body name="B_last" pos="0 0 0">
+                                  <geom size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                                </body>
+                                <joint name="J_last" type="ball" pos="0 0 0" stiffness="0.0" damping="0.5" actuatorfrclimited="false"/>
+                                <geom name="G12" pos="0.5 0 0" quat="0.707107 0 -0.707107 0" type="capsule" size="0.0150 0.5000" rgba="0.1 0.05333333333333334 0.6733333333333333 1" conaffinity="0" contype="0" solref="0.001 1" condim="1"/>
+                                <site name="S_12" pos="0 0 0" size="0.0135" rgba="0 0 0 0"/>
+                                <site name="twistcylx_13" pos="0 0 0.05" quat="0.707 0 0 -0.707" size="0.001 0.05" rgba="0 0 1 0.0" type="cylinder" group="1" />
+                                <site name="twistcyly_13" pos="0 0.05 0" quat="0.707 -0.707 0 0" size="0.001 0.05" rgba="1 1 0 0.0" type="cylinder" group="1" />
+                                <site name="S_last" pos="1.0 0 0" size="0.0135"/>
+                                <body name="B_last2" pos="1.0 0 0">
+                                  <geom name="bl2_geom" size="0.0135" type="sphere" contype="0" conaffinity="0" mass="0.0" rgba="0.8 0.2 0.1 0.3"/>
+                                </body>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <sensor>
+  </sensor>
+  <equality>
+     <weld body1='B_last' body2='eef_body' solref='0.001 1'/>
+     <weld body1='B_first' body2='eef_body2' solref='0.001 1'/>
+  </equality>
+  <contact>
+    <exclude body1="Bmain_first" body2="Bmain_last"/>
+    <exclude body1="Bmain_1" body2="Bmain_last"/>
+    <exclude body1="Bmain_first" body2="Bmain_11"/>
+    <exclude body1="Bmain_first" body2="Bmain_1"/>
+    <exclude body1="Bmain_1" body2="Bmain_2"/>
+    <exclude body1="Bmain_2" body2="Bmain_3"/>
+    <exclude body1="Bmain_3" body2="Bmain_4"/>
+    <exclude body1="Bmain_4" body2="Bmain_5"/>
+    <exclude body1="Bmain_5" body2="Bmain_6"/>
+    <exclude body1="Bmain_6" body2="Bmain_7"/>
+    <exclude body1="Bmain_7" body2="Bmain_8"/>
+    <exclude body1="Bmain_8" body2="Bmain_9"/>
+    <exclude body1="Bmain_9" body2="Bmain_10"/>
+    <exclude body1="Bmain_10" body2="Bmain_11"/>
+    <exclude body1="Bmain_11" body2="Bmain_last"/>
+    <exclude body1="eef_body" body2="Bmain_first"/>
+    <exclude body1="eef_body" body2="Bmain_last"/>
+    <exclude body1="eef_body" body2="Bmain_11"/>
+  </contact>
+</mujoco>
