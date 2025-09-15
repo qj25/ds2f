@@ -329,6 +329,24 @@ def scipy_quat_to_matrix(q):
     q_scipy = np.array([q[1], q[2], q[3], q[0]])
     return R.from_quat(q_scipy).as_matrix()
 
+def rotate_points_z(points, angle=-np.pi/2):
+    """
+    Rotate an array of 3D points about the z-axis.
+
+    Args:
+        points (ndarray): Shape (N, 3), each row is (x, y, z).
+        angle (float): Rotation angle in radians (default -π/2).
+
+    Returns:
+        ndarray: Rotated points of shape (N, 3).
+    """
+    Rz = np.array([
+        [np.cos(angle), -np.sin(angle), 0],
+        [np.sin(angle),  np.cos(angle), 0],
+        [0,              0,             1]
+    ])
+    return points @ Rz.T
+
 if __name__ == "__main__":
     t1 = axisangle2quat(np.array([75.*np.pi/180, 0., 0.]))
     t2 = axisangle2quat(np.array([0., 0., 60.*np.pi/180]))

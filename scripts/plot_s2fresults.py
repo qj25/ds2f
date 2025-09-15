@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import argparse
+import ds2f.utils.transform_utils as T
 from ds2f.utils.dlo_utils import ang_btwn
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -21,7 +22,7 @@ def plot_wire_with_forces(wire_points, fpos_list, fvec_list, plot_path=None, y_h
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.view_init(elev=17, azim=-57)
+    ax.view_init(elev=17, azim=-57-90)
     # ax.grid(False)
 
     ax.xaxis._axinfo["grid"]['color'] = (0.7, 0.7, 0.7, 0.5)  # Light gray, semi-transparent
@@ -99,9 +100,12 @@ def plot_wire_with_forces(wire_points, fpos_list, fvec_list, plot_path=None, y_h
     ax.set_xticklabels([])
     ax.set_yticklabels([])
     ax.set_zticklabels([])
-    ax.set_xlabel("X", labelpad=-14)
-    ax.set_ylabel("Y", labelpad=-14)
-    ax.set_zlabel("Z", labelpad=-14)
+    ax.set_xlabel('← X+', labelpad=-14)
+    ax.set_ylabel('+Y →', labelpad=-14)
+    ax.set_zlabel('← Z+', labelpad=-14)
+    ax.xaxis.set_rotate_label(True)
+    ax.yaxis.set_rotate_label(True)
+    ax.zaxis.set_rotate_label(True)
     # plt.title("3D Wire with Multiple Force Vector Sets")
     plt.rcParams.update({'pdf.fonttype': 42})
     plt.savefig(plot_path, bbox_inches='tight')
@@ -149,8 +153,9 @@ def average_last_n_rows(csv_path, n=100):
     return df.mean().to_numpy()
 
 ## Settings
-frac_actualf = 0.5
-# frac_actualf = 32/50
+print("Make sure you change frac_actualf when toggling between exp1 and exp2!")
+frac_actualf = 0.5  ## CHANGE THIS
+frac_actualf = 32/50
 f_scale = 100.0
 
 # Argument parser for user input
@@ -189,6 +194,12 @@ avgvec = frame_rot.dot(avgvec)
 avg_pos = get_fractional_point(wire_pos, frac_actualf)
 print(f"avgvec = {avgvec}")
 print(f"fvec = {fvec}")
+
+wire_pos = T.rotate_points_z(wire_pos)
+fvec = T.rotate_points_z(fvec)
+fpos = T.rotate_points_z(fpos)
+avgvec = T.rotate_points_z(avgvec)
+avg_pos = T.rotate_points_z(avg_pos)
 
 fvec_list = [
     np.vstack((fvec[0],fvec[-1])),
