@@ -39,6 +39,7 @@ DLO_s2f::DLO_s2f(
     torque_tolerance = torque_tolerance_;
     tolC2 = tolC2_;
     tolC3 = tolC3_;
+    tolF = 1e-3;
     nodeposMat.resize(nv+2, 3);
     nodetorqMat.resize(nv+2, 3);
 }
@@ -381,6 +382,11 @@ bool DLO_s2f::checkConsistency()
             force_count++;
             if (raiseErrs) {
                 // std::cout << "force_calc = " << result.first << std::endl;
+                // std::cout << "H0" << std::endl;
+                // std::cout << "\nUndisturbed Sections:" << std::endl;
+                // for (const auto& section : undisturbed_sections) {
+                //     std::cout << "start_idx: " << section.start_idx << ", end_idx: " << section.end_idx << std::endl;
+                // }                
                 std::cout << "added to UD" << std::endl;
             }
         } else {
@@ -396,27 +402,67 @@ bool DLO_s2f::checkConsistency()
 
                 if (undisturbed_sections.size()>0) {
                     if (new_section.start_idx <= undisturbed_sections.back().end_idx) {
-                        new_section.start_idx = undisturbed_sections.back().start_idx;
-                        int force_count_prev = (
-                            undisturbed_sections.back().end_idx - undisturbed_sections.back().start_idx
-                        ) + 1 - 2;
-                        new_section.avg_force = (
-                            new_section.avg_force*force_count
-                            + undisturbed_sections.back().avg_force*force_count_prev
-                        ) / (force_count + force_count_prev);
-                        undisturbed_sections.back().indiv_forces.insert(
-                            undisturbed_sections.back().indiv_forces.end(),
-                            new_section.indiv_forces.begin(),
-                            new_section.indiv_forces.end()
-                        );
-                        undisturbed_sections.back().c3.insert(
-                            undisturbed_sections.back().c3.end(),
-                            new_section.c3.begin(),
-                            new_section.c3.end()
-                        );
-                        new_section.indiv_forces = undisturbed_sections.back().indiv_forces;
-                        new_section.c3 = undisturbed_sections.back().c3;
-                        undisturbed_sections.back() = new_section;
+                        if ((new_section.avg_force - undisturbed_sections.back().avg_force).norm() < tolF)
+                        {
+                            new_section.start_idx = undisturbed_sections.back().start_idx;
+                            int force_count_prev = (
+                                undisturbed_sections.back().end_idx - undisturbed_sections.back().start_idx
+                            ) + 1 - 2;
+                            new_section.avg_force = (
+                                new_section.avg_force*force_count
+                                + undisturbed_sections.back().avg_force*force_count_prev
+                            ) / (force_count + force_count_prev);
+                            undisturbed_sections.back().indiv_forces.insert(
+                                undisturbed_sections.back().indiv_forces.end(),
+                                new_section.indiv_forces.begin(),
+                                new_section.indiv_forces.end()
+                            );
+                            undisturbed_sections.back().c3.insert(
+                                undisturbed_sections.back().c3.end(),
+                                new_section.c3.begin(),
+                                new_section.c3.end()
+                            );
+                            new_section.indiv_forces = undisturbed_sections.back().indiv_forces;
+                            new_section.c3 = undisturbed_sections.back().c3;
+                            undisturbed_sections.back() = new_section;
+                        }
+                        else {
+                            // Compare average c3 values
+                            double avg_c3_new = 0.0;
+                            if (!new_section.c3.empty()) {
+                                for (double val : new_section.c3) {
+                                    avg_c3_new += val;
+                                }
+                                avg_c3_new /= new_section.c3.size();
+                            }
+                            
+                            double avg_c3_back = 0.0;
+                            if (!undisturbed_sections.back().c3.empty()) {
+                                for (double val : undisturbed_sections.back().c3) {
+                                    avg_c3_back += val;
+                                }
+                                avg_c3_back /= undisturbed_sections.back().c3.size();
+                            }
+                            
+                            if (avg_c3_new > avg_c3_back) {
+                                // new_section has larger c3, adjust its start_idx
+                                new_section.start_idx = undisturbed_sections.back().end_idx + 1;
+                                // Check if new_section is too small
+                                if (new_section.end_idx - new_section.start_idx >= 2) {
+                                    undisturbed_sections.push_back(new_section);
+                                }
+                                // If too small, don't add new_section
+                            } else {
+                                // undisturbed_sections.back() has larger c3, adjust its end_idx
+                                undisturbed_sections.back().end_idx = new_section.start_idx - 1;
+                                // Check if undisturbed_sections.back() is too small
+                                if (undisturbed_sections.back().end_idx - undisturbed_sections.back().start_idx < 2) {
+                                    undisturbed_sections.pop_back();
+                                }
+                                // Add new_section after adjusting back (it should now be non-overlapping)
+                                undisturbed_sections.push_back(new_section);
+                            }
+                        }
                     } else {
                         undisturbed_sections.push_back(new_section);
                     }
@@ -425,6 +471,11 @@ bool DLO_s2f::checkConsistency()
                 }
                 in_undisturbed_section = false;
                 if (raiseErrs) {
+                    // std::cout << "H0" << std::endl;
+                    // std::cout << "\nUndisturbed Sections:" << std::endl;
+                    // for (const auto& section : undisturbed_sections) {
+                    //     std::cout << "start_idx: " << section.start_idx << ", end_idx: " << section.end_idx << std::endl;
+                    // }                
                     std::cout << "end UD" << std::endl;
                 }
             }

@@ -41,6 +41,7 @@ public:
     double torque_tolerance;  // Tolerance for torque norm
     double tolC2;
     double tolC3;
+    double tolF;
     double parllThreshold = 0.9999;
     
     int nv;
