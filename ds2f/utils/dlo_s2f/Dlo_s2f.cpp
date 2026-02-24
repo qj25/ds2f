@@ -43,6 +43,7 @@ DLO_s2f::DLO_s2f(
     tolC2 = tolC2_;
     tolC3 = tolC3_;
     tolF = 1e-3;
+    tolF = 1e-3;
     nodeposMat.resize(nv+2, 3);
     nodetorqMat.resize(nv+2, 3);
 }
@@ -461,11 +462,6 @@ bool DLO_s2f::checkConsistency()
             force_count++;
             if (raiseErrs) {
                 // std::cout << "force_calc = " << result.first << std::endl;
-                std::cout << "H0" << std::endl;
-                std::cout << "\nUndisturbed Sections:" << std::endl;
-                for (const auto& section : undisturbed_sections) {
-                    std::cout << "start_idx: " << section.start_idx << ", end_idx: " << section.end_idx << std::endl;
-                }                
                 std::cout << "added to UD" << std::endl;
             }
         } else {
@@ -482,11 +478,6 @@ bool DLO_s2f::checkConsistency()
                 add_or_merge_ud_section(new_section, force_count);
                 in_undisturbed_section = false;
                 if (raiseErrs) {
-                    std::cout << "H0" << std::endl;
-                    std::cout << "\nUndisturbed Sections:" << std::endl;
-                    for (const auto& section : undisturbed_sections) {
-                        std::cout << "start_idx: " << section.start_idx << ", end_idx: " << section.end_idx << std::endl;
-                    }                
                     std::cout << "end UD" << std::endl;
                 }
             }

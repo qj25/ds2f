@@ -22,7 +22,7 @@ def plot_wire_with_forces(wire_points, fpos_list, fvec_list, plot_path=None, y_h
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.view_init(elev=17, azim=-57-90)
+    ax.view_init(elev=17, azim=-57+90)
     # ax.grid(False)
 
     ax.xaxis._axinfo["grid"]['color'] = (0.7, 0.7, 0.7, 0.5)  # Light gray, semi-transparent
