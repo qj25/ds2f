@@ -95,7 +95,7 @@ def generate_overall_native_xml(
     xml = []
     xml.append('<mujoco model="base">')
     xml.append('  <compiler angle="radian"/>')
-    xml.append('  <option timestep="0.0005" tolerance="1e-10" integrator="RK4" cone="elliptic" jacobian="sparse" iterations="30"/>')
+    xml.append('  <option timestep="0.0015" tolerance="1e-10" integrator="RK4" cone="elliptic" jacobian="sparse" iterations="30"/>')
     xml.append('  <size njmax="5000" nconmax="5000"/>')
     xml.append('  <visual>')
     xml.append('    <quality shadowsize="2048"/>')
@@ -123,9 +123,9 @@ def generate_overall_native_xml(
     xml.append('  </asset>')
     xml.append('  <worldbody>')
     xml.append('    <geom name="floor" size="3 3 0.125" pos="0 0 -10" type="plane" condim="1" material="matplane"/>')
-    xml.append('    <geom name="axis_x" type="capsule" fromto="0 0 0 0.03 0 0" size="0.002" rgba="1 0 0 1" contype="0" conaffinity="0"/>')
-    xml.append('    <geom name="axis_y" type="capsule" fromto="0 0 0 0 0.03 0" size="0.002" rgba="0 1 0 1" contype="0" conaffinity="0"/>')
-    xml.append('    <geom name="axis_z" type="capsule" fromto="0 0 0 0 0 0.03" size="0.002" rgba="0 0 1 1" contype="0" conaffinity="0"/>')
+    # xml.append('    <geom name="axis_x" type="capsule" fromto="0 0 0 0.03 0 0" size="0.002" rgba="1 0 0 1" contype="0" conaffinity="0"/>')
+    # xml.append('    <geom name="axis_y" type="capsule" fromto="0 0 0 0 0.03 0" size="0.002" rgba="0 1 0 1" contype="0" conaffinity="0"/>')
+    # xml.append('    <geom name="axis_z" type="capsule" fromto="0 0 0 0 0 0.03" size="0.002" rgba="0 0 1 1" contype="0" conaffinity="0"/>')
 
     xml.append(f'    <body name="eef_body2" pos="{b_0_pos[0]} {b_0_pos[1]} {b_0_pos[2]}" quat="{b_0_quat[0]} {b_0_quat[1]} {b_0_quat[2]} {b_0_quat[3]}">')
     xml.append(f'      <geom name="eef_geom2" size="{thickness} {thickness} {thickness*2}" type="box" contype="0" conaffinity="0" mass="10" rgba="0.1 0.8 0.2 0.7"/>')

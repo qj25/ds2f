@@ -42,7 +42,7 @@ def plotter_process_indiv(queue: mp.Queue, num_series=2, save_path="realtime_plo
             ax.autoscale_view()
         return lines
 
-    ani = animation.FuncAnimation(fig, update, interval=100, blit=False)
+    ani = animation.FuncAnimation(fig, update, interval=100, blit=False, cache_frame_data=False)
 
     try:
         plt.show(block=True)
@@ -95,7 +95,7 @@ def plotter_process_force(queue: mp.Queue, save_path="fsim_plot.png", data_path=
             ax.autoscale_view()
         return lines
 
-    ani = animation.FuncAnimation(fig, update, interval=100, blit=False)
+    ani = animation.FuncAnimation(fig, update, interval=100, blit=False, cache_frame_data=False)
 
     plt.show(block=True)
 
@@ -112,7 +112,7 @@ def plotter_process_force(queue: mp.Queue, save_path="fsim_plot.png", data_path=
             df.to_csv(data_path, index=False)
             print(f"Data saved to {data_path}")
 
-def plotter_process_fp(queue: mp.Queue, save_path="fpsim_plot.png", data_path=None):
+def plotter_process_fp(queue: mp.Queue, save_path="fpsim_plot.png", data_path=None, y_min=None, y_max=None):
     plt.ion()
     fig, ax = plt.subplots()
     ax.set_xlabel("Time (s)")
@@ -153,10 +153,127 @@ def plotter_process_fp(queue: mp.Queue, save_path="fpsim_plot.png", data_path=No
             for i, name in enumerate(series_names):
                 lines[i].set_data(xdata, ydata[name])
             ax.relim()
+            if y_min is None or y_max is None:
+                ax.autoscale_view()
+            else:
+                ax.autoscale_view(scaley=False)
+                ax.set_ylim(y_min, y_max)
+        return lines
+
+    ani = animation.FuncAnimation(fig, update, interval=100, blit=False, cache_frame_data=False)
+
+    plt.show(block=True)
+
+    if xdata:
+        # Save plot
+        if save_path is not None:
+            fig.savefig(save_path)
+            print(f"Plot saved to {save_path}")
+        # Save data
+        if data_path is not None:
+            df = pd.DataFrame({"Time": xdata})
+            for name in series_names:
+                df[name] = ydata[name]
+            df.to_csv(data_path, index=False)
+            print(f"Data saved to {data_path}")
+
+def plotter_process_error(queue: mp.Queue, save_path="error_plot.png", data_path=None, title="Realtime Normalized Error Plot"):
+    plt.ion()
+    fig, ax = plt.subplots()
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Normalized Error")
+    ax.set_title(title)
+    ax.grid(True)
+
+    series_names = ["$e$", "$\\bar{e}$"]
+    colors = ["m", "k"]
+    lines = []
+
+    for i, name in enumerate(series_names):
+        linestyle = "-" if i == 0 else "--"
+        lw = 1.0 if i == 0 else 2.0
+        alpha = 0.3 if i == 0 else 1.0
+        line, = ax.plot([], [], lw=lw, alpha=alpha, color=colors[i], linestyle=linestyle, label=name)
+        lines.append(line)
+    ax.legend()
+
+    xdata = []
+    ydata = {name: [] for name in series_names}
+
+    def update(_):
+        while not queue.empty():
+            t, val_dict = queue.get()
+            xdata.append(t)
+            for name in series_names:
+                val = val_dict.get(name)
+                ydata[name].append(val if val is not None else np.nan)
+
+        if xdata:
+            for i, name in enumerate(series_names):
+                lines[i].set_data(xdata, ydata[name])
+            ax.relim()
             ax.autoscale_view()
         return lines
 
-    ani = animation.FuncAnimation(fig, update, interval=100, blit=False)
+    ani = animation.FuncAnimation(fig, update, interval=100, blit=False, cache_frame_data=False)
+    plt.show(block=True)
+
+    if xdata:
+        if save_path is not None:
+            fig.savefig(save_path)
+            print(f"Plot saved to {save_path}")
+        if data_path is not None:
+            df = pd.DataFrame({"Time": xdata})
+            for name in series_names:
+                df[name] = ydata[name]
+            df.to_csv(data_path, index=False)
+            print(f"Data saved to {data_path}")
+
+def plotter_process_force_magnitude(queue: mp.Queue, save_path="force_magnitude_plot.png", data_path=None, force_label="Force"):
+    plt.ion()
+    fig, ax = plt.subplots()
+    ax.set_xlabel("Time (s)")
+    ax.set_ylabel("Force Magnitude (N)")
+    ax.set_title(f"Realtime Force Magnitude Plot - {force_label}")
+    ax.grid(True)  # enables grid lines
+
+    # List of series names
+    series_names = ["$|F_{act}|$", "$|F_{est}|$"]
+    colors = ["r", "b"]
+    lines = []
+
+    # Initialize line objects
+    for i, name in enumerate(series_names):
+        color = colors[i]
+        linestyle = '-' if i < len(series_names)/2 else ':'
+        alpha = 0.7
+        line, = ax.plot([], [], lw=2, color=color, alpha=alpha, linestyle=linestyle, label=name)
+        lines.append(line)
+    ax.legend()
+
+    xdata = []
+    ydata = {name: [] for name in series_names}
+
+    def update(_):
+        while not queue.empty():
+            t, val_dict = queue.get()
+            xdata.append(t)
+            for i, name in enumerate(series_names):
+                val = val_dict.get(name)
+                if val is not None:
+                    ydata[name].append(val)
+                else:
+                    # If None, append last value or NaN to keep array lengths consistent
+                    ydata[name].append(np.nan)  
+
+        if xdata:
+            for i, name in enumerate(series_names):
+                lines[i].set_data(xdata, ydata[name])
+            ax.relim()
+            ax.autoscale_view()
+        return lines
+
+    ani = animation.FuncAnimation(fig, update, interval=100, blit=False, cache_frame_data=False)
 
     plt.show(block=True)
 
@@ -603,6 +720,74 @@ def plot_computetime_all(pieces_list, data_list, plot_labels=None):
 
     # Show the plot
     plt.show()
+
+def plot_nforces_timing(n_forces_list, avg_times, sd_times, save_path=None, show_plot=True, unit="s"):
+    """
+    Plot average ds2f runtime against number of applied forces with SD error bars.
+
+    Parameters
+    ----------
+    n_forces_list : array-like
+        Number of applied forces for each benchmark setting.
+    avg_times : array-like
+        Mean runtime values (in specified unit) for each n_forces.
+    sd_times : array-like
+        Standard deviation values (in specified unit) for each n_forces.
+    save_path : str or None
+        Output path for PDF plot. If None, save to default figs directory.
+    show_plot : bool
+        If True, display the plot window.
+    unit : str
+        Unit for the time axis (default: "s" for seconds, use "ms" for milliseconds).
+    """
+    x = np.asarray(n_forces_list, dtype=float)
+    y = np.asarray(avg_times, dtype=float)
+    yerr = np.asarray(sd_times, dtype=float)
+
+    if x.size == 0 or y.size == 0 or yerr.size == 0:
+        raise ValueError("Input arrays must be non-empty.")
+    if not (x.size == y.size == yerr.size):
+        raise ValueError("n_forces_list, avg_times, and sd_times must have the same length.")
+
+    if save_path is None:
+        save_path = os.path.join(img_path, "nforces_compute_time.pdf")
+
+    plt.style.use("seaborn-v0_8")
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.set_facecolor("white")
+    ax.grid(color="#DDDDDD", linewidth=0.8, zorder=0)
+
+    ax.errorbar(
+        x,
+        y,
+        yerr=yerr,
+        fmt="o-",
+        color="#db6000",
+        ecolor="#db995a",
+        elinewidth=1.5,
+        capsize=4,
+        capthick=1.5,
+        markersize=6,
+        linewidth=2.0,
+        zorder=3,
+        label="Mean runtime",
+    )
+
+    ax.set_xlabel("Number of Applied Forces ($n_{forces}$)", fontsize=12)
+    ax.set_ylabel(f"Computation Time ({unit})", fontsize=12)
+    ax.set_title("ds2f Runtime vs Number of Applied Forces", fontsize=13)
+    ax.set_xticks(x)
+    ax.tick_params(axis="both", which="major", labelsize=11)
+    ax.legend(fontsize=11, loc="best")
+
+    plt.tight_layout()
+    fig.savefig(save_path, bbox_inches="tight")
+    print(f"Plot saved to {save_path}")
+
+    if show_plot:
+        plt.show()
+    else:
+        plt.close(fig)
 
 if __name__ == "__main__":
     import time

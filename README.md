@@ -4,6 +4,9 @@ Using the jpQ-DER model based off the DER theory ([Bergou2008](http://www.cs.col
 ## Requires
 Requires: [MuJoCo](https://mujoco.readthedocs.io/en/latest/overview.html), [Gymnasium](https://github.com/Farama-Foundation/Gymnasium), [mujoco-python-viewer](https://github.com/rohanpsingh/mujoco-python-viewer), [eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page#Download)
 
+## Build:
+1. Navigate to `ds2f/utils/dlo_s2f` and run `bash swigbuild.sh` to build the solver.
+
 ## Use:
 1. In the root directory of this package:
 ```
